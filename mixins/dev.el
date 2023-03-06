@@ -14,6 +14,12 @@
 ;;;  - Common file types
 ;;;  - Eglot, the built-in LSP client for Emacs
 
+;; Add mepa-stable as a source for packages
+;;; Code
+(add-to-list 'package-archives
+             '("melpa-stable" . "https://stable.melpa.org/packages/"))
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
 ;;;   Version Control
@@ -63,6 +69,8 @@
   ;; Sometimes you need to tell Eglot where to find the language server
   ; (add-to-list 'eglot-server-programs
   ;              '(haskell-mode . ("haskell-language-server-wrapper" "--lsp")))
+  (add-to-list 'eglot-server-programs
+	       '(go-mode . ("gopls")))
   )
 
 ;; SLIME
@@ -81,3 +89,13 @@
   :ensure t
   :bind (("C-x f" . go-test-current-file)
          ("C-x t" . go-test-current-test)))
+
+(use-package rainbow-delimiters
+  :ensure t)
+
+(use-package flycheck
+  :ensure t
+  :init (global-flycheck-mode))
+
+(provide 'dev)
+;;; dev.el ends here
