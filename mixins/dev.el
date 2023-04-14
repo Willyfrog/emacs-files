@@ -19,7 +19,8 @@
 (add-to-list 'package-archives
              '("melpa-stable" . "https://stable.melpa.org/packages/"))
 
-
+(use-package ag
+  :ensure t)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
 ;;;   Version Control
@@ -75,6 +76,7 @@
 
 ;; SLIME
 (use-package slime-company
+  :ensure t
   :after (slime company)
   :config (setq slime-company-completion 'fuzzy
                 slime-company-after-completion 'slime-company-just-one-space))
@@ -112,16 +114,21 @@
   (setq flycheck-check-syntax-automatically '(save mode-enabled))
   (eldoc-mode +1)
   (tide-hl-identifier-mode +1)
-  ;; company is an optional dependency. You have to
-  ;; install it separately via package-install
-  ;; `M-x package-install [ret] company`
   (company-mode +1))
+
+(setq tide-format-options
+      '(
+	:insertSpaceAfterOpeningAndBeforeClosingNonemptyParenthesis nil
+        :insertSpaceAfterOpeningAndBeforeClosingNonemptyBrackets nil
+        :insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces nil
+        :insertSpaceAfterOpeningAndBeforeClosingTemplateStringBraces nil
+        :insertSpaceAfterOpeningAndBeforeClosingJsxExpressionBraces nil))
 
 ;; aligns annotation to the right hand side
 (setq company-tooltip-align-annotations t)
 
 ;; formats the buffer before saving
-(add-hook 'before-save-hook 'tide-format-before-save)
+;; (add-hook 'before-save-hook 'tide-format-before-save)
 (add-hook 'typescript-mode-hook #'setup-tide-mode)
 
 (use-package web-mode
@@ -136,6 +143,14 @@
 
 ;; enable typescript - tslint checker
 (flycheck-add-mode 'typescript-tslint 'web-mode)
+
+;; projectile
+(use-package projectile
+  :ensure t
+  :bind (:map projectile-mode-map
+              ("s-p" . projectile-command-map)))
+
+(projectile-mode +1)
 
 (provide 'dev)
 ;;; dev.el ends here
